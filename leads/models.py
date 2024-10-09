@@ -12,11 +12,11 @@ class Lead(models.Model):
     agent = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"Lead: {self.first_name} {self.last_name} | Assigned to: {self.agent}"
+        return f"{self.first_name} {self.last_name} | Assigned to: {self.agent}"
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         username = self.user.get_full_name() or self.user.get_short_name() or self.user.username
-        return f"Agent: {username}"
+        return f"{username}"
