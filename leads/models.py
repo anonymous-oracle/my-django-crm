@@ -11,5 +11,11 @@ class Lead(models.Model):
     age = models.IntegerField(default=0)
     agent = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f"Lead: {self.first_name} {self.last_name} | Assigned to: {self.agent}"
+
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Agent: {self.user.get_full_name()}"
