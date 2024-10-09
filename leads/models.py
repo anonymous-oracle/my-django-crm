@@ -18,4 +18,5 @@ class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"Agent: {self.user.get_full_name()}"
+        username = self.user.get_full_name() or self.user.get_short_name() or self.user.username
+        return f"Agent: {username}"
