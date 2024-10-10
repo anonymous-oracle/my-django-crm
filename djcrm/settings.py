@@ -55,7 +55,7 @@ ROOT_URLCONF = 'djcrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [Path(BASE_DIR, 'templates')], # this path needs to be explicitly mentioned so that django understands to look for templates within
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

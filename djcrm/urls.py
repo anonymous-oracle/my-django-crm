@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import leads.views as lead_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', lead_views.home_page, name='leads-home'),
+    path('second/', lead_views.second_home_page, name='leads-second-home'),
+
 ]
