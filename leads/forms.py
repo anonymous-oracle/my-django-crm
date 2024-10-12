@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead
+from .models import Lead, Agent
 
 class LeadForm(forms.Form):
     first_name = forms.CharField()
@@ -8,6 +8,7 @@ class LeadForm(forms.Form):
 
 class LeadModelForm(forms.ModelForm):
 
+    agent = forms.ModelChoiceField(Agent.objects, required=False) # adding a model choice field
     class Meta:
         model = Lead
         fields = (

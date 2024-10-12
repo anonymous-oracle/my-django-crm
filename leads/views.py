@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from .models import Lead, Agent
 from . import forms
+from . import utils
 
 # Create your views here.
 def lead_list(request: HttpRequest):
@@ -30,13 +31,13 @@ def lead_detail(request: HttpRequest, pk):
 
 # def lead_create(request: HttpRequest):
 #     if request.method.lower() == 'post':
-#         form = forms.LeadForm(request.POST)
-#         if form.is_valid():
-#             if not form.cleaned_data.get('agent'):
-#                 form.cleaned_data.update(agent = Agent.objects.first())
-#             lead = Lead.objects.create(**form.cleaned_data)
-#             lead.save()
-#             return redirect('/leads')
+        # form = forms.LeadForm(request.POST)
+        # if form.is_valid():
+        #     if not form.cleaned_data.get('agent'):
+        #         form.cleaned_data.update(agent = Agent.objects.first())
+        #     lead = Lead.objects.create(**form.cleaned_data)
+        #     lead.save()
+        #     return redirect('/leads')
 #             # return HttpResponse(f"Created a lead for {form.cleaned_data.get('first_name')}")
 #     elif request.method.lower() == 'get':   
 #         context = {
@@ -51,10 +52,13 @@ def lead_detail(request: HttpRequest, pk):
 
 def lead_create(request: HttpRequest):
     if request.method.lower() == 'post':
-        form = forms.LeadModelForm(request.POST)
+        post_data = request.POST.dict()
+        form = forms.LeadModelForm(post_data)
         if form.is_valid():
             if not form.cleaned_data.get('agent'):
-                form.cleaned_data.update(agent = Agent.objects.first())
+                agent = utils.assign_agent_for_lead()
+                post_data.update(agent = agent)
+                form = forms.LeadModelForm(post_data)
             form.save() # for a model form, calling the .save() method after validation is sufficient to save the lead details
             return redirect('/leads')
             # return HttpResponse(f"Created a lead for {form.cleaned_data.get('first_name')}")
@@ -68,3 +72,50 @@ def lead_create(request: HttpRequest):
         response.status_code = 404
         response.content = "<h1>Not found</h1>"
         return response
+    
+# def lead_update(request: HttpRequest, pk):
+#     if request.method.lower() == 'get':
+#         lead = Lead.objects.get(id=pk)
+#         context = {
+#             'lead': lead,
+#             'form': forms.LeadForm()
+#         }
+#         return render(request=request, template_name='leads/lead_update.html', context=context)
+#     elif request.method.lower() == 'post':
+#         form = forms.LeadForm(request.POST)
+#         if form.is_valid():
+#             if not form.cleaned_data.get('agent'):
+#                 form.cleaned_data.update(agent = Agent.objects.first())
+#             Lead.objects.filter(id=pk).update(**form.cleaned_data)
+#         return redirect('/leads')
+#     else:
+#         response = HttpResponse()
+#         response.status_code = 404
+#         response.content = "<h1>Not found</h1>"
+#         return response
+    
+def lead_update(request: HttpRequest, pk):
+
+    lead = Lead.objects.get(id=pk)
+    if request.method.lower() == 'get':
+        context = {
+            'lead': lead,
+            'form': forms.LeadModelForm(instance=lead)
+        }
+        return render(request=request, template_name='leads/lead_update.html', context=context)
+    elif request.method.lower() == 'post':
+        form = forms.LeadModelForm(request.POST, instance=lead)
+        if form.is_valid():
+            if not form.cleaned_data.get('agent'):
+                lead.agent = utils.assign_agent_for_lead()
+            form.save()
+        return redirect('/leads')
+    else:
+        response = HttpResponse()
+        response.status_code = 404
+        response.content = "<h1>Not found</h1>"
+        return response
+
+def lead_delete(request: HttpRequest, pk):
+    Lead.objects.get(id=pk).delete()
+    return redirect('/leads')

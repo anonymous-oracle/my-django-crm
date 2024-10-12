@@ -9,7 +9,7 @@ class Lead(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
+    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, null=True) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name} | Assigned to: {self.agent}"

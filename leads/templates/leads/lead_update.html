@@ -8,11 +8,11 @@
 <body>
     <a href="/leads">Go back to leads</a>
     <hr>
-    <h2>Details of {{ lead.first_name }}</h2>
-    <p>Age: {{ lead.age }}</p>
-    <p>Agent assigned: {{ lead.agent }}</p>
-    <hr>
-    <a href="/leads/{{ lead.id }}/update">Update</a>
-    <a href="/leads/{{ lead.id }}/delete">Delete</a>
+    <h1>Update lead: {{ lead }}</h1>
+    <form method="POST" action="/leads/{{ lead.id }}/update">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
