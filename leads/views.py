@@ -30,14 +30,17 @@ def lead_detail(request: HttpRequest, pk):
 
 def lead_create(request: HttpRequest):
     if request.method.lower() == 'post':
-        form = forms.LeadForm(request.POST)
+        form = forms.LeadModelForm(request.POST)
         if form.is_valid():
-            Lead.objects.create(agent = Agent.objects.first(), **form.cleaned_data)
+            if not form.cleaned_data.get('agent'):
+                form.cleaned_data.update(agent = Agent.objects.first())
+            lead = Lead.objects.create(**form.cleaned_data)
+            lead.save()
             return redirect('/leads')
             # return HttpResponse(f"Created a lead for {form.cleaned_data.get('first_name')}")
     elif request.method.lower() == 'get':   
         context = {
-            "form": forms.LeadForm()
+            "form": forms.LeadModelForm()
         }
         return render(request=request, template_name='leads/lead_create.html', context = context)
     else:
