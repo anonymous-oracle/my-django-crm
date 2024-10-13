@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
 from .models import Lead, Agent
 from . import forms
 from . import utils
@@ -19,6 +19,14 @@ class LeadDetailView(DetailView):
     template_name = 'leads/lead_detail.html'
     queryset = Lead.objects.all()
     context_object_name = "lead"
+
+class LeadCreateView(CreateView):
+    template_name = 'leads/lead_create.html'
+    form_class = forms.LeadModelForm()
+
+    def get_success_url(self) -> str:
+        return redirect('leads:home')
+
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
