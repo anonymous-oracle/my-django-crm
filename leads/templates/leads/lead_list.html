@@ -2,9 +2,9 @@
 {% block content %}
 <section class="text-gray-400 bg-gray-900 body-font">
     <div class="container px-5 py-24 mx-auto flex flex-wrap">
-        <div class="lead">
+        <div class="mt-3 text-indigo-400 inline-flex items-center container mx-left">
             <!-- the alternative href can also be href="/leads/{{ lead.pk }}; a forward slash at the start will indicate an absolute path" -->
-            <a href="{% url 'leads:create' %}">Create a new lead</a>
+            <a href="{% url 'leads:create' %}" class="mt-3 text-indigo-400 inline-flex items-center">Create a new lead</a>
             <hr>
         </div>
         <div class="flex flex-wrap -m-4">
