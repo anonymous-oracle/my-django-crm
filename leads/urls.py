@@ -13,5 +13,6 @@ urlpatterns = [
     path("create/", views.LeadCreateView.as_view(), name="create"),
     # path("<int:pk>/update", views.lead_update, name="update"),
     path("<int:pk>/update", views.LeadUpdateView.as_view(), name="update"),
-    path("<int:pk>/delete", views.lead_delete, name="delete"),
+    # path("<int:pk>/delete", views.lead_delete, name="delete"),
+    path("<int:pk>/delete", views.LeadDeleteView.as_view(), name="delete"),
 ]

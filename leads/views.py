@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from . import forms
 from . import utils
@@ -25,7 +25,7 @@ class LeadCreateView(CreateView):
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
-        return redirect('leads:home')
+        return reverse('leads:home')
 
 class LeadUpdateView(UpdateView):
     template_name = 'leads/lead_update.html'
@@ -35,6 +35,12 @@ class LeadUpdateView(UpdateView):
     def get_success_url(self) -> str:
         return reverse('leads:home')
 
+class LeadDeleteView(DeleteView):
+    template_name = 'leads/lead_delete.html'
+    queryset = Lead.objects.all()
+
+    def get_success_url(self) -> str:
+        return reverse('leads:home')
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
