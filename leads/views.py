@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import ListView, TemplateView
 from .models import Lead, Agent
 from . import forms
 from . import utils
@@ -9,6 +9,11 @@ from . import utils
 
 class LandingPageView(TemplateView):
     template_name = 'landing.html'
+
+class LeadListView(ListView):
+    template_name = 'leads/lead_list.html'
+    queryset = Lead.objects.all() # the queryset of the model that has to be listed
+    context_object_name = "leads" # this will rename the default context variable which is called as objects_list to leads
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
