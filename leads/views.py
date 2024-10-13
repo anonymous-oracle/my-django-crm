@@ -6,6 +6,9 @@ from . import utils
 
 
 # Create your views here.
+def landing_page(request: HttpRequest):
+    return render(request=request, template_name='landing.html')
+
 def lead_list(request: HttpRequest):
 
     # context = {
