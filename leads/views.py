@@ -17,7 +17,7 @@ class LeadListView(ListView):
 
 class LeadDetailView(DetailView):
     template_name = 'leads/lead_detail.html'
-    queryset = Lead.objects.all()
+    queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail lead view
     context_object_name = "lead"
 
 class LeadCreateView(CreateView):
@@ -29,7 +29,7 @@ class LeadCreateView(CreateView):
 
 class LeadUpdateView(UpdateView):
     template_name = 'leads/lead_update.html'
-    queryset = Lead.objects.all()
+    queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail update view
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
