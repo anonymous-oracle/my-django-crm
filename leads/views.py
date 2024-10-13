@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView
 from .models import Lead, Agent
@@ -33,7 +33,7 @@ class LeadUpdateView(UpdateView):
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
-        return redirect('leads:home')
+        return reverse('leads:home')
 
 
 def landing_page(request: HttpRequest):
