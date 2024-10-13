@@ -6,10 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="/leads">Go back to leads</a>
+    <a href="{% url 'leads:home'  %}">Go back to leads</a>
     <hr>
     <h1>Update lead: {{ lead }}</h1>
-    <form method="POST" action="/leads/{{ lead.id }}/update">
+    <form method="POST" action="{% url 'leads:update' lead.pk %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
