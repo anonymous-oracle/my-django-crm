@@ -29,6 +29,7 @@ class LeadCreateView(CreateView):
 
 class LeadUpdateView(UpdateView):
     template_name = 'leads/lead_update.html'
+    queryset = Lead.objects.all()
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
