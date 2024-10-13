@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="/leads">Go back to leads</a>
+    <a href="{% url 'leads:home' %}">Go back to leads</a>
     <hr>
     <h2>Details of {{ lead.first_name }}</h2>
     <p>Age: {{ lead.age }}</p>
