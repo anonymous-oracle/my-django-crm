@@ -1,33 +1,33 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
+from django.views import generic
 from .models import Lead, Agent
 from . import forms
 from . import utils
 
 # Create your views here.
 
-class LandingPageView(TemplateView):
+class LandingPageView(generic.TemplateView):
     template_name = 'landing.html'
 
-class LeadListView(ListView):
+class LeadListView(generic.ListView):
     template_name = 'leads/lead_list.html'
     queryset = Lead.objects.all() # the queryset of the model that has to be listed
     context_object_name = "leads" # this will rename the default context variable which is called as objects_list to leads
 
-class LeadDetailView(DetailView):
+class LeadDetailView(generic.DetailView):
     template_name = 'leads/lead_detail.html'
     queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail lead view
     context_object_name = "lead"
 
-class LeadCreateView(CreateView):
+class LeadCreateView(generic.CreateView):
     template_name = 'leads/lead_create.html'
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
         return reverse('leads:home')
 
-class LeadUpdateView(UpdateView):
+class LeadUpdateView(generic.UpdateView):
     template_name = 'leads/lead_update.html'
     queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail update view
     form_class = forms.LeadModelForm
@@ -35,7 +35,7 @@ class LeadUpdateView(UpdateView):
     def get_success_url(self) -> str:
         return reverse('leads:home')
 
-class LeadDeleteView(DeleteView):
+class LeadDeleteView(generic.DeleteView):
     template_name = 'leads/lead_delete.html'
     queryset = Lead.objects.all()
 
