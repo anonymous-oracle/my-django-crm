@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse
+from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
 from .models import Lead, Agent
@@ -26,6 +27,13 @@ class LeadCreateView(generic.CreateView):
 
     def get_success_url(self) -> str:
         return reverse('leads:home')
+
+    # this method was selected based on the method in super class of the CreateView
+    def form_valid(self, form): # if form is valid an email will be sent
+        send_mail(subject="Lead created", message="Visit the website to view the changes",
+                  from_email='test@test.com', recipient_list=['test2@test.com'])
+        # this is how the form validation works
+        return super(LeadCreateView, self).form_valid(form)
 
 class LeadUpdateView(generic.UpdateView):
     template_name = 'leads/lead_update.html'
