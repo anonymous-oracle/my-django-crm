@@ -11,9 +11,9 @@
         <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
 
             {% if not request.user.is_authenticated %}
-                <a href="{% url 'signup' %}" class="mr-5 hover:text-white">Sign up</a>
+            <a href="{% url 'signup' %}" class="mr-5 hover:text-white">Sign up</a>
             {% else %}
-                <a href="{% url 'leads:home' %}" class="mr-5 hover:text-white">Leads</a>
+            <a href="{% url 'leads:home' %}" class="mr-5 hover:text-white">Leads</a>
             {% endif %}
         </nav>
         {% if request.user.is_authenticated %}
@@ -23,21 +23,23 @@
         </script> -->
         <form method="POST" action="{% url 'logout' %}" id="logout-form">
             {% csrf_token %}
-          <button type="submit" class="ml-3 inline-flex items-center focus:outline-none hover:text-white rounded text-base" id="logout-btn">Logout
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <button type="submit" id="logout-btn"
+                class="ml-3 inline-flex items-center focus:outline-none hover:text-white rounded text-base">Logout
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     class="w-4 h-4 ml-1" viewBox="0 0 24 24">
                     <path d="M5 12h14M12 5l7 7-7 7"></path>
                 </svg>
-          </button>
+            </button>
         </form>
-            <!-- <a href="{% url 'logout' %}" class="ml-3 inline-flex items-center focus:outline-none hover:text-white rounded text-base ">Logout
+        <!-- <a href="{% url 'logout' %}" class="ml-3 inline-flex items-center focus:outline-none hover:text-white rounded text-base ">Logout
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     class="w-4 h-4 ml-1" viewBox="0 0 24 24">
                     <path d="M5 12h14M12 5l7 7-7 7"></path>
                 </svg>
             </a> -->
         {% else %}
-        <a href="{% url 'login' %}" class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Login
+        <a href="{% url 'login' %}"
+            class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Login
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 class="w-4 h-4 ml-1" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7"></path>
