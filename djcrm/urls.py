@@ -28,7 +28,7 @@ urlpatterns = [
     path('', LandingPageView.as_view(), name='landing-page'),
     path('login/', LoginView.as_view(), name='login'),
     path('signup/', SignupView.as_view(), name='signup'),
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout')
 ]
 
 if settings.DEBUG:
