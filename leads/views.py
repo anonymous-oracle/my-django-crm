@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from .models import Lead, Agent
 from . import forms
@@ -18,19 +19,26 @@ class SignupView(generic.CreateView):
 class LandingPageView(generic.TemplateView):
     template_name = 'landing.html'
 
-class LeadListView(generic.ListView):
+class LeadListView(LoginRequiredMixin, generic.ListView):
     template_name = 'leads/lead_list.html'
     queryset = Lead.objects.all() # the queryset of the model that has to be listed
     context_object_name = "leads" # this will rename the default context variable which is called as objects_list to leads
 
-class LeadDetailView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs) # simply demonstrates the ListView class's get method to handle requests
+
+
+class LeadDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'leads/lead_detail.html'
     queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail lead view
     context_object_name = "lead"
 
-class LeadCreateView(generic.CreateView):
+class LeadCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'leads/lead_create.html'
     form_class = forms.LeadModelForm
+
+    def post(self, request, *args, **kwargs):
+        return super().post(self, request, *args, **kwargs)
 
     def get_success_url(self) -> str:
         return reverse('leads:home')
@@ -42,7 +50,7 @@ class LeadCreateView(generic.CreateView):
         # this is how the form validation works
         return super(LeadCreateView, self).form_valid(form)
 
-class LeadUpdateView(generic.UpdateView):
+class LeadUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'leads/lead_update.html'
     queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail update view
     form_class = forms.LeadModelForm
@@ -50,7 +58,7 @@ class LeadUpdateView(generic.UpdateView):
     def get_success_url(self) -> str:
         return reverse('leads:home')
 
-class LeadDeleteView(generic.DeleteView):
+class LeadDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = 'leads/lead_delete.html'
     queryset = Lead.objects.all()
 
