@@ -30,6 +30,7 @@ class Agent(models.Model):
     
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created: # executes further only if the instance is newly created
-        UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance) # instance refers to the User object that was just created
 
+# post save is a signal function used to trigger a signal whenever an object is created/saved by specifying the object model class in the sender field
 post_save.connect(post_user_created_signal, sender=User) # the signal is sent whenever a user model is created

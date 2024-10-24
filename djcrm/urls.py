@@ -24,6 +24,7 @@ from leads.views import landing_page, LandingPageView, SignupView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('leads/', include('leads.urls', namespace='leads')),
+    path('agents/', include('agents.urls', namespace='agents')),
     # path('', landing_page, name='landing-page')
     path('', LandingPageView.as_view(), name='landing-page'),
     path('login/', LoginView.as_view(), name='login'),
