@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, reverse
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
@@ -6,6 +8,7 @@ from django.views import generic
 from .models import Lead, Agent
 from . import forms
 from . import utils
+from agents import mixins
 
 # Create your views here.
 
@@ -21,8 +24,17 @@ class LandingPageView(generic.TemplateView):
 
 class LeadListView(LoginRequiredMixin, generic.ListView):
     template_name = 'leads/lead_list.html'
-    queryset = Lead.objects.all() # the queryset of the model that has to be listed
+    # queryset = Lead.objects.all() # the queryset of the model that has to be listed
     context_object_name = "leads" # this will rename the default context variable which is called as objects_list to leads
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Lead.objects.filter(organisation=user.userprofile) # if organiser, fetches all the leads of that organisation based on the userprofile
+        else:
+            queryset = Lead.objects.filter(organisation=user.agent.organisation) # if agent, then fetches the leads based on the particular agent organisation for the logged in user
+            queryset = queryset.filter(agent__user = user)
+        return queryset
 
     def get(self, request, *args, **kwargs):
         return super().get(self, request, *args, **kwargs) # simply demonstrates the ListView class's get method to handle requests
@@ -30,10 +42,18 @@ class LeadListView(LoginRequiredMixin, generic.ListView):
 
 class LeadDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'leads/lead_detail.html'
-    queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail lead view
     context_object_name = "lead"
 
-class LeadCreateView(LoginRequiredMixin, generic.CreateView):
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Lead.objects.filter(organisation=user.userprofile) # if organiser, fetches all the leads of that organisation based on the userprofile
+        else:
+            queryset = Lead.objects.filter(organisation=user.agent.organisation) # if agent, then fetches the leads based on the particular agent organisation for the logged in user
+            queryset = queryset.filter(agent__user = user)
+        return queryset
+
+class LeadCreateView(mixins.OrganiserAndLoginRequiredMixin, generic.CreateView):
     template_name = 'leads/lead_create.html'
     form_class = forms.LeadModelForm
 
@@ -50,20 +70,26 @@ class LeadCreateView(LoginRequiredMixin, generic.CreateView):
         # this is how the form validation works
         return super(LeadCreateView, self).form_valid(form)
 
-class LeadUpdateView(LoginRequiredMixin, generic.UpdateView):
+class LeadUpdateView(mixins.OrganiserAndLoginRequiredMixin, generic.UpdateView):
     template_name = 'leads/lead_update.html'
-    queryset = Lead.objects.all() # the view needs a query set to filter the particular lead for the detail update view
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
         return reverse('leads:home')
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        # allows update only for the organiser
+        return Lead.objects.filter(organisation=self.request.user.userprofile) # if organiser, fetches all the leads of that organisation based on the userprofile
 
-class LeadDeleteView(LoginRequiredMixin, generic.DeleteView):
+class LeadDeleteView(mixins.OrganiserAndLoginRequiredMixin, generic.DeleteView):
     template_name = 'leads/lead_delete.html'
-    queryset = Lead.objects.all()
 
     def get_success_url(self) -> str:
         return reverse('leads:home')
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        # allows delete only for the organiser
+        return Lead.objects.filter(organisation=self.request.user.userprofile)
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')

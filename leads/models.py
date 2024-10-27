@@ -4,7 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    is_organiser = models.BooleanField(default=True)
+    is_agent = models.BooleanField(default=False) # if agent is assigned then the account is not an organiser account and will not have a userprofile
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -15,7 +16,8 @@ class Lead(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, null=True) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
+    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE) # adding for the sake of filtering leads based on a particular organisation
+    agent = models.ForeignKey("Agent", on_delete=models.SET_NULL, null=True, blank=True) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name} | Assigned to: {self.agent}"
