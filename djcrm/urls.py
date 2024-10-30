@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView
 from leads.views import landing_page, LandingPageView, SignupView
 
 urlpatterns = [
@@ -29,6 +29,8 @@ urlpatterns = [
     path('', LandingPageView.as_view(), name='landing-page'),
     path('login/', LoginView.as_view(), name='login'),
     path('signup/', SignupView.as_view(), name='signup'),
+    path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
+    path('password-reset-done/', PasswordResetDoneView.as_view(), name='password-reset-done')
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout')
 ]
 
