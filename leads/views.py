@@ -30,14 +30,24 @@ class LeadListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self) -> QuerySet[Any]:
         user = self.request.user
         if user.is_organiser:
-            queryset = Lead.objects.filter(organisation=user.userprofile) # if organiser, fetches all the leads of that organisation based on the userprofile
+            queryset = Lead.objects.filter(organisation=user.userprofile, agent__isnull=False) # if organiser, fetches all the leads of that organisation based on the userprofile
         else:
-            queryset = Lead.objects.filter(organisation=user.agent.organisation) # if agent, then fetches the leads based on the particular agent organisation for the logged in user
+            queryset = Lead.objects.filter(organisation=user.agent.organisation, agent__isnull=False) # if agent, then fetches the leads based on the particular agent organisation for the logged in user
             queryset = queryset.filter(agent__user = user)
         return queryset
 
     def get(self, request, *args, **kwargs):
         return super().get(self, request, *args, **kwargs) # simply demonstrates the ListView class's get method to handle requests
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super(LeadListView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_organiser:
+            unassigned_leads = Lead.objects.filter(agent__isnull=True, organisation=user.userprofile) # unassigned leads of the user's organisation if the user is an organisor
+            context.update({
+                "unassigned_leads": unassigned_leads            
+        })
+        return context
 
 
 class LeadDetailView(LoginRequiredMixin, generic.DetailView):
@@ -65,6 +75,9 @@ class LeadCreateView(mixins.OrganiserAndLoginRequiredMixin, generic.CreateView):
 
     # this method was selected based on the method in super class of the CreateView
     def form_valid(self, form): # if form is valid an email will be sent
+        lead = form.save(commit=False)
+        lead.organisation = self.request.user.userprofile
+        lead.save()
         send_mail(subject="Lead created", message="Visit the website to view the changes",
                   from_email='test@test.com', recipient_list=['test2@test.com'])
         # this is how the form validation works

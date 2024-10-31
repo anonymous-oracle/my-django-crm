@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from leads.views import landing_page, LandingPageView, SignupView
 
 urlpatterns = [
@@ -30,7 +30,12 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('signup/', SignupView.as_view(), name='signup'),
     path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
-    path('password-reset-done/', PasswordResetDoneView.as_view(), name='password-reset-done')
+    path('password-reset-done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # 1. PasswordResetForm is a class in forms.py in django forms; the context parameters required to pass in the email template is present in the save method of the form class
+    # 2. <uidb64> and <token> parameters will be checked for their presence in the kwargs of the password reset confirm view's dispatch method
+    # 3. password-reset-confirm is needed in the token url because the HTTP routes start with the endpoint; if there is no endpoint then the relative path will start from the uid
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password-reset-complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout')
 ]
 
