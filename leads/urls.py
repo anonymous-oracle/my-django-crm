@@ -15,4 +15,5 @@ urlpatterns = [
     path("<int:pk>/update", views.LeadUpdateView.as_view(), name="update"),
     # path("<int:pk>/delete", views.lead_delete, name="delete"),
     path("<int:pk>/delete", views.LeadDeleteView.as_view(), name="delete"),
+    path("<int:pk>/assign-agent/", views.AssignAgentView.as_view(), name="assign-agent"),
 ]

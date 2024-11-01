@@ -105,7 +105,35 @@ class LeadDeleteView(mixins.OrganiserAndLoginRequiredMixin, generic.DeleteView):
         return Lead.objects.filter(organisation=self.request.user.userprofile)
 
 class AssignAgentView(mixins.OrganiserAndLoginRequiredMixin, generic.FormView):
+    template_name = "leads/assign_agent.html"
+    form_class = forms.AssignAgentForm
+
+    def get_success_url(self):
+        return reverse('leads:home')
     
+    def get_form_kwargs(self):
+        kwargs = super(AssignAgentView, self).get_form_kwargs()
+        kwargs.update({
+            # "pk": self.kwargs.get('pk'),
+            "request": self.request # in the post request of the form, all kwargs that have been set here will be available
+        })
+        # kwargs.update(self.kwargs) # updating the get request kwargs
+
+        # print(f"\n\nGET Form kwargs data:\n{self.kwargs}\n\n")
+
+        return kwargs
+    
+    def form_valid(self, form: Any) -> HttpResponse:
+
+        # print(f"\n\nForm cleaned data:\n{form.cleaned_data}\n\n")
+        # print(f"\n\nPOST Form kwargs data:\n{self.get_form_kwargs()}\n\n")
+        
+        selected_agent = form.cleaned_data.get('agent')
+
+        lead = Lead.objects.get(id=self.kwargs.get('pk')) # self.kwargs will contain the URL params that is sent across the request
+        lead.agent = selected_agent
+        lead.save()
+        return super(AssignAgentView, self).form_valid(form)
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
