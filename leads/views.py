@@ -104,6 +104,9 @@ class LeadDeleteView(mixins.OrganiserAndLoginRequiredMixin, generic.DeleteView):
         # allows delete only for the organiser
         return Lead.objects.filter(organisation=self.request.user.userprofile)
 
+class AssignAgentView(mixins.OrganiserAndLoginRequiredMixin, generic.FormView):
+    
+
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
 
