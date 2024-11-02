@@ -17,6 +17,7 @@
                 <a href="{% url 'agents:agent-list' %}" class="mr-5 hover:text-white">Agents</a>
             {% endif %}
             <a href="{% url 'leads:home' %}" class="mr-5 hover:text-white">Leads</a>
+            <a href="{% url 'leads:category-list' %}" class="mr-5 hover:text-white">Categories</a>
             {% endif %}
         </nav>
         {% if request.user.is_authenticated %}

@@ -18,6 +18,7 @@ class Lead(models.Model):
     age = models.IntegerField(default=0)
     organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE) # adding for the sake of filtering leads based on a particular organisation
     agent = models.ForeignKey("Agent", on_delete=models.SET_NULL, null=True, blank=True) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name} | Assigned to: {self.agent}"
@@ -29,6 +30,14 @@ class Agent(models.Model):
     def __str__(self) -> str:
         username = self.user.get_full_name() or self.user.get_short_name() or self.user.username
         return f"{username}"
+
+class Category(models.Model):
+    name = models.CharField(max_length=30) # new, contacted, converted, unconverted
+    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.name
+
     
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created: # executes further only if the instance is newly created

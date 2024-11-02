@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="text-white bg-gray-900 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-col text-center w-full mb-20">
+            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-white">Categories</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">These categories segment the leads</p>
+        </div>
+        <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+            <table class="table-auto w-full text-left whitespace-no-wrap">
+                <thead>
+                    <tr>
+                        <th
+                            class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-orange-500 rounded-tl rounded-bl">
+                            Category</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-orange-500">Lead
+                            Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-3">Unassigned lead count</td>
+                        <td class="px-4 py-3">{{ unassigned_lead_count }}</td>
+                    </tr>
+                    {% for category in category_list %}
+                    <tr>
+                        <td class="px-4 py-3">{{ category.name }}</td>
+                        <td class="px-4 py-3">TODO: (Display lead count)</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

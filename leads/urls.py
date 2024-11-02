@@ -16,4 +16,5 @@ urlpatterns = [
     # path("<int:pk>/delete", views.lead_delete, name="delete"),
     path("<int:pk>/delete", views.LeadDeleteView.as_view(), name="delete"),
     path("<int:pk>/assign-agent/", views.AssignAgentView.as_view(), name="assign-agent"),
+    path("categories/", views.CategoryListView.as_view(), name='category-list')
 ]
