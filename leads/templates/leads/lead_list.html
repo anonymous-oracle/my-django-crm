@@ -9,7 +9,8 @@
             {% if request.user.is_organiser %}
             <div>
                 <!-- the alternative href can also be href="/leads/{{ lead.pk }}; a forward slash at the start will indicate an absolute path" -->
-                <a href="{% url 'leads:create' %}" class="text-white-500 hover:text-yellow-300">Create a new lead</a>
+                <a href="{% url 'leads:create' %}" class="m-2 text-white-500 hover:text-yellow-300">Create a new lead</a>
+                <a href="{% url 'leads:category-list' %}" class="m-2 text-white-500 hover:text-yellow-300">View categories</a>
             </div>
             {% endif %}
 

@@ -158,6 +158,37 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
         else:
             queryset = Category.objects.filter(organisation=user.agent.organisation)
         return queryset 
+    
+class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name = "leads/category_detail.html"
+    context_object_name = "category"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(organisation=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organisation=user.agent.organisation)
+        return queryset 
+
+
+    ########################################################################################################################################
+    # commenting out the get_context_override for this view since the leads of the category being referred can be accessed from the template itself 
+    ########################################################################################################################################
+    
+    # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    #     context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        
+    #     # qs = Lead.object.filter(category=self.get_object()) # get_object() function returns the specific object that is currently being referred by the detail view; this is a special method which is a part of generic.DetailView
+
+    #     qs = self.get_object().lead_set.all() # since category has a foreign key reference to leads it is a one to many relationship from category to leads, so since the model is Lead, we take the prefix to be 'lead' and then add 'set'; it is set because all foreign key references refer to unique leads
+
+
+    #     context.update({
+    #         "leads": qs
+    #     })
+    #     return context
+
 
 def landing_page(request: HttpRequest):
     return render(request=request, template_name='landing.html')
