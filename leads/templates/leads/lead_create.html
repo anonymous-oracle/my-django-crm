@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
 {% block content %}
 <a href="{% url 'leads:home' %}">Go back to leads</a>
 <hr>
 <h1>Create a new Lead</h1>
 <form method="POST" action="{% url 'leads:create' %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button type="submit">Submit</button>
 </form>
 {% endblock content %}
