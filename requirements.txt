@@ -1,5 +1,6 @@
 asgiref
 crispy-bootstrap5
+crispy-tailwind
 Django
 django-crispy-forms
 pillow
