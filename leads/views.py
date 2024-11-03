@@ -170,12 +170,28 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
         else:
             queryset = Category.objects.filter(organisation=user.agent.organisation)
         return queryset 
+    
+class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = 'leads/lead_category_update.html'
+    form_class = forms.LeadCategoryUpdateForm
+
+    def get_success_url(self) -> str:
+        return reverse('leads:detail', kwargs={'pk':self.get_object().id})
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Lead.objects.filter(organisation=user.userprofile)
+        else:
+            queryset = Lead.objects.filter(organisation=user.agent.organisation)
+            queryset = queryset.filter(agent__user = user)
+        return queryset
 
 
     ########################################################################################################################################
     # commenting out the get_context_override for this view since the leads of the category being referred can be accessed from the template itself 
     ########################################################################################################################################
-    
+
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
     #     context = super(CategoryDetailView, self).get_context_data(**kwargs)
         

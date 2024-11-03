@@ -9,6 +9,7 @@ urlpatterns = [
     path("second/", views.second_home_page, name="second-home"),
     # path("<int:pk>/", views.lead_detail, name="detail"),
     path("<int:pk>/", views.LeadDetailView.as_view(), name="detail"),
+    path("<int:pk>/category/", views.LeadCategoryUpdateView.as_view(), name="lead-category-update"),
     # path("create/", views.lead_create, name="create"),
     path("create/", views.LeadCreateView.as_view(), name="create"),
     # path("<int:pk>/update", views.lead_update, name="update"),

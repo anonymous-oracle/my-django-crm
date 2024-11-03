@@ -10,10 +10,10 @@
                 </h1>
                 <div class="flex mb-4">
                     <a href="{% url 'leads:detail' lead.pk %}"
-                        class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Overview</a>
-                    <a class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Reviews</a>
+                        class="flex-grow text-orange-500 border-b-2 border-orange-500 py-2 text-lg px-1 hover:text-orange-500">Overview</a>
+                    <a href="{% url 'leads:lead-category-update' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1 hover:text-orange-500">Category</a>
                     <a href="{% url 'leads:update' lead.pk %}"
-                        class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Update Details</a>
+                        class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1 hover:text-orange-500">Update Details</a>
                 </div>
                 <p class="leading-relaxed mb-4">Lead Description</p>
                 <div class="flex border-t border-gray-200 py-2">
@@ -21,8 +21,12 @@
                     <span class="ml-auto text-gray-900">{{ lead.age }}</span>
                 </div>
                 <div class="flex border-t border-gray-200 py-2">
-                    <span class="text-gray-500">Location</span>
-                    <span class="ml-auto text-gray-900">None</span>
+                    <span class="text-gray-500">Category</span>
+                    {% if lead.category %}
+                        <span class="ml-auto text-gray-900">{{ lead.category }}</span>
+                    {% else %}
+                        <span class="ml-auto text-gray-900">---</span>
+                    {% endif %}
                 </div>
                 <div class="flex border-t border-b mb-6 border-gray-200 py-2">
                     <span class="text-gray-500">Cell phone</span>
