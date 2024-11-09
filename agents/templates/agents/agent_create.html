@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% load tailwind_filters %}
 {% block content %}
-<a class="hover:text-orange-500" href="{% url 'agents:agent-list' %}">Go back to agents</a>
-<hr>
-<h1 class="mt-3 mb-3 text-lg font-bold">Create a new agent</h1>
-<form method="POST" action="{% url 'agents:agent-create' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit">Submit</button>
-</form>
+<div class="container max-w-lg mx-auto mt-3">
+    <a class="text-lg font-medium hover:text-orange-500" href="{% url 'agents:agent-list' %}">Go back to agents</a>
+    <hr>
+    <div>
+        <h1 class="text-xl text-gray-800 mt-4">Create a new Lead</h1>
+    </div>
+    <form method="POST" action="{% url 'agents:agent-create' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit"
+            class="mx-auto inline-flex py-1 px-3 text-white bg-orange-500 hover:bg-indigo-500 rounded">Submit</button>
+    </form>
+</div>
 {% endblock content %}

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load tailwind_filters %}
 {% block content %}
-<div class="container max-w-lg mx-auto mt-4">
-    <a class="hover:text-orange-500" href="{% url 'leads:home' %}">Go back to leads</a>
+<div class="container max-w-lg mx-auto mt-3">
+    <a class="text-lg font-medium hover:text-orange-500" href="{% url 'leads:home' %}">Go back to leads</a>
     <hr>
     <h1 class="text-xl text-gray-800 mt-4">Create a new Lead</h1>
     <form class="mt-4" method="POST" action="{% url 'leads:create' %}">
