@@ -30,8 +30,7 @@
                     <div class="flex-grow">
                         <h2 class="text-white text-lg title-font font-medium mb-3"> {{ lead.first_name }} {{ lead.last_name }}
                         </h2>
-                        <p class="leading-relaxed text-base">Lead Description Lead Description Lead Description Lead
-                            Description Lead Description Lead Description Lead Description .</p>
+                        <p class="leading-relaxed text-base">{{ lead.description }}</p>
                         <a href="{% url 'leads:detail' lead.pk %}"
                             class="mt-3 text-indigo-400 inline-flex items-center">View this lead
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -61,8 +60,7 @@
                         <div class="flex-grow">
                             <h2 class="text-white text-lg title-font font-medium mb-3"> {{ lead.first_name }} {{lead.last_name }}
                             </h2>
-                            <p class="leading-relaxed text-base">Lead Description Lead Description Lead Description Lead
-                                Description Lead Description Lead Description Lead Description .</p>
+                            <p class="leading-relaxed text-base">{{ lead.description }}</p>
                             <a href="{% url 'leads:assign-agent' lead.pk %}"
                                 class="mt-3 text-indigo-400 inline-flex items-center">Assign an agent
                                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

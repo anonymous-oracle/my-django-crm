@@ -88,7 +88,7 @@ class LeadUpdateView(mixins.OrganiserAndLoginRequiredMixin, generic.UpdateView):
     form_class = forms.LeadModelForm
 
     def get_success_url(self) -> str:
-        return reverse('leads:home')
+        return reverse('leads:detail', kwargs={'pk':self.kwargs.get('pk')})
     
     def get_queryset(self) -> QuerySet[Any]:
         # allows update only for the organiser

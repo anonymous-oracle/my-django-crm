@@ -22,7 +22,7 @@ class LeadModelForm(forms.ModelForm):
 
     class Meta:
         model = Lead
-        fields = ("first_name", "last_name", "age", "agent")
+        fields = ("first_name", "last_name", "age", "agent", 'description', 'phone_number', 'email')
 
 class CustomUserCreationForm(UserCreationForm):
 
