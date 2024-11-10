@@ -19,6 +19,10 @@ class Lead(models.Model):
     organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE) # adding for the sake of filtering leads based on a particular organisation
     agent = models.ForeignKey("Agent", on_delete=models.SET_NULL, null=True, blank=True) # wrapping in quotes allows to define the Agent model class below the current class; else it would have had to be defined above the Lead class first
     category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(max_length=20)
+    email = models.EmailField()
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name} | Assigned to: {self.agent}"

@@ -17,14 +17,17 @@
                         class="flex-grow text-orange-500 border-b-2 border-orange-500 py-2 text-lg px-1">Update
                         Details</a>
                 </div>
-                <form method="POST" action="{% url 'agents:agent-update' agent.pk %}">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit">Submit</button>
-                </form>
+                <div>
+                    <form method="POST" action="{% url 'agents:agent-update' agent.pk %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="mx-auto inline-flex py-1 px-3 text-white bg-orange-500 hover:bg-indigo-500 rounded" type="submit">Submit</button>
+                        <a href="{% url 'agents:agent-delete' agent.pk %}"
+                    class="mx-auto inline-flex py-1 px-3 text-white bg-orange-500 hover:bg-indigo-500 rounded">Delete</a>
+                    </form>
+                </div>
 
-                <a href="{% url 'agents:agent-delete' agent.pk %}"
-                    class="w-1/2 mt-3 flex ml-auto text-white bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Delete</a>
+                
             </div>
             <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
                 src="https://dummyimage.com/400x400">
