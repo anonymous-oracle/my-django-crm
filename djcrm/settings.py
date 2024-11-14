@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic", # adding this disables django's default file handling in development servers and allows whitenoise to take over the file handling
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
