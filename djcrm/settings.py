@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = [
-    "127.0.0.1"
+    "localhost"
 ]
 
 
@@ -175,7 +175,34 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
 
-    ALLOWED_HOSTS = ["*"] # once a domain is decided for the app, the domain would be specified and practically it is not advisable to allow all hosts
+    ALLOWED_HOSTS = ["localhost"] # once a domain is decided for the app, the domain would be specified and practically it is not advisable to allow all hosts
 
     # In production run the django app using gunicorn
     # gunicorn djcrm.wsgi:application # this points to the folder in the project root djcrm -> wsgi.py -> application variable
+    
+
+    # SAMPLE EMAIL SETUP WITH MAILGUN
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ.get("EMAIL_HOST")
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = os.environ.get("EMAIL_PORT")
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+
+TAILWIND_APP_NAME = 'theme'

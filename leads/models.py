@@ -42,6 +42,18 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+def handle_upload_follow_ups(instance, filename):
+    return f"lead_followups/lead_{instance.lead.pk}/{filename}"
+
+class FollowUp(models.Model):
+    lead = models.ForeignKey(Lead, related_name="followups", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+    file = models.FileField(null=True, blank=True, upload_to=handle_upload_follow_ups)
+
+    def __str__(self):
+        return f"{self.lead.first_name} {self.lead.last_name}"
+
     
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created: # executes further only if the instance is newly created

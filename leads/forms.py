@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import get_user_model
 from django.forms.renderers import BaseRenderer
 from django.forms.utils import ErrorList
-from .models import Lead, Agent
+from .models import Lead, Agent, FollowUp
 
 User = get_user_model() # fetches the current project's User model instead of the default user model 
 
@@ -48,3 +48,11 @@ class LeadCategoryUpdateForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = ("category",)
+
+class FollowUpModelForm(forms.ModelForm):
+    class Meta:
+        model = FollowUp
+        fields = (
+            'notes',
+            'file'
+        )
